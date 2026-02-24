@@ -2,6 +2,7 @@ package com.gabrielli.hospital_api.controller;
 
 import com.gabrielli.hospital_api.DTO.PacienteRequestDTO;
 import com.gabrielli.hospital_api.DTO.PacienteResponseDTO;
+import com.gabrielli.hospital_api.DTO.PacienteUpdateDTO;
 import com.gabrielli.hospital_api.Service.PacienteService;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,12 @@ public class PacienteController {
     public PacienteResponseDTO buscarPaciente(@PathVariable long id){return pacienteService.buscarPaciente(id);};
 
     @CrossOrigin(origins = "*",allowedHeaders = "*")
+    @PatchMapping("/{id}")
+    public PacienteResponseDTO atualizarDadosPaciente(@PathVariable long id, @RequestBody PacienteUpdateDTO data){return pacienteService.atualizarDadosPaciente(id,data);}
+
+    @CrossOrigin(origins = "*",allowedHeaders = "*")
     @DeleteMapping("/{id}")
     public void deletarPaciente(@PathVariable long id){pacienteService.deletarPaciente(id);};
+
+
 }
