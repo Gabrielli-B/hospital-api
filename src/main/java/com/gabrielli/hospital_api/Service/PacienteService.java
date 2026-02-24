@@ -2,11 +2,14 @@ package com.gabrielli.hospital_api.Service;
 
 import com.gabrielli.hospital_api.DTO.PacienteRequestDTO;
 import com.gabrielli.hospital_api.DTO.PacienteResponseDTO;
+import com.gabrielli.hospital_api.DTO.PacienteUpdateDTO;
 import com.gabrielli.hospital_api.exception.DadoInvalidoException;
 import com.gabrielli.hospital_api.exception.PacienteNotExist;
 import com.gabrielli.hospital_api.model.Paciente;
 import com.gabrielli.hospital_api.repository.PacienteRepository;
 import org.springframework.stereotype.Service;
+
+import static com.gabrielli.hospital_api.util.ValidarCampos.validarCampo;
 
 @Service
 public class PacienteService {
@@ -38,27 +41,21 @@ public class PacienteService {
     }
 
     //atualizar dados paciente
-    public PacienteResponseDTO atualizarDadosPaciente(long id, PacienteRequestDTO data) {
+    public PacienteResponseDTO atualizarDadosPaciente(long id, PacienteUpdateDTO data) {
         Paciente paciente = pacienteRepository.findById(id).orElseThrow(()-> new PacienteNotExist(id));
-        if(data.telefone()!=null){
-            if(data.telefone().isBlank()){
-                throw new DadoInvalidoException("Telefone inválido");
-            }
-            paciente.setTelefone(data.telefone());
-        }
-        if(data.email()!=null){
-            if(data.email().isBlank()){
-                throw new DadoInvalidoException("Email inválido");
-            }
-            paciente.setEmail(data.email());
-        }
         if(data.endereco()!=null){
-            if(data.endereco().isBlank()){
-                throw new DadoInvalidoException("Endereço inválido");
-            }
+            validarCampo(data.endereco(), " endereço");
             paciente.setEndereco(data.endereco());
         }
+        if(data.email()!=null){
+            validarCampo(data.email()," E-mail");
+            paciente.setEmail(data.email());
+        }
+        if(data.telefone()!=null){
+            validarCampo(data.telefone()," telefone");
+            paciente.setTelefone(data.telefone());
+        }
         pacienteRepository.save(paciente);
-        return new PacienteResponseDTO(paciente);
+        return  new PacienteResponseDTO(paciente);
     }
 }
