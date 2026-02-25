@@ -7,7 +7,7 @@ import com.gabrielli.hospital_api.Service.PacienteService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/hospital-api")
+@RequestMapping("/pacientes")
 public class PacienteController {
     private final PacienteService pacienteService;
 

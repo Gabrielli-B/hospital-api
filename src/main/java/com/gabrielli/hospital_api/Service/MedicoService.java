@@ -15,8 +15,6 @@ public class MedicoService {
     public MedicoService(MedicoRepository medicoRepository){
         this.medicoRepository=medicoRepository;
     }
-
-
     //criar
     public MedicoResponseDTO criarMedico(MedicoRequestDTO data){
         Medico medico = new Medico(data);
@@ -30,7 +28,6 @@ public class MedicoService {
         }
         medicoRepository.deleteById(id);
     }
-
     //buscar
     public MedicoResponseDTO buscarMedico(Long id){
         Medico medico = medicoRepository.findById(id).orElseThrow(()->new IdNotExist(id));
