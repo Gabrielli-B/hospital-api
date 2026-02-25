@@ -3,8 +3,7 @@ package com.gabrielli.hospital_api.Service;
 import com.gabrielli.hospital_api.DTO.PacienteRequestDTO;
 import com.gabrielli.hospital_api.DTO.PacienteResponseDTO;
 import com.gabrielli.hospital_api.DTO.PacienteUpdateDTO;
-import com.gabrielli.hospital_api.exception.DadoInvalidoException;
-import com.gabrielli.hospital_api.exception.PacienteNotExist;
+import com.gabrielli.hospital_api.exception.IdNotExist;
 import com.gabrielli.hospital_api.model.Paciente;
 import com.gabrielli.hospital_api.repository.PacienteRepository;
 import org.springframework.stereotype.Service;
@@ -29,20 +28,20 @@ public class PacienteService {
     //deletar
     public void deletarPaciente(long id){
         if(!pacienteRepository.existsById(id)){
-            throw new PacienteNotExist(id);
+            throw new IdNotExist(id);
         }
         pacienteRepository.deleteById(id);
     }
 
     //procurar paciente pelo id
     public PacienteResponseDTO buscarPaciente(long id){
-        Paciente paciente = pacienteRepository.findById(id).orElseThrow(()-> new PacienteNotExist(id));
+        Paciente paciente = pacienteRepository.findById(id).orElseThrow(()-> new IdNotExist(id));
         return new PacienteResponseDTO(paciente);
     }
 
     //atualizar dados paciente
     public PacienteResponseDTO atualizarDadosPaciente(long id, PacienteUpdateDTO data) {
-        Paciente paciente = pacienteRepository.findById(id).orElseThrow(()-> new PacienteNotExist(id));
+        Paciente paciente = pacienteRepository.findById(id).orElseThrow(()-> new IdNotExist(id));
         if(data.endereco()!=null){
             validarCampo(data.endereco(), " endereço");
             paciente.setEndereco(data.endereco());
