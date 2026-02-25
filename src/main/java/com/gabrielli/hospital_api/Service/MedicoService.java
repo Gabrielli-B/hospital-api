@@ -31,4 +31,9 @@ public class MedicoService {
         medicoRepository.deleteById(id);
     }
 
+    //buscar
+    public MedicoResponseDTO buscarMedico(Long id){
+        Medico medico = medicoRepository.findById(id).orElseThrow(()->new IdNotExist(id));
+        return new MedicoResponseDTO(medico);
+    }
 }
