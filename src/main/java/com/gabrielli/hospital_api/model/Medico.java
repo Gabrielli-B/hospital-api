@@ -1,5 +1,6 @@
 package com.gabrielli.hospital_api.model;
 
+import com.gabrielli.hospital_api.DTO.MedicoRequestDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,10 +19,9 @@ public class Medico  extends Pessoa{
     private String crm;
     private String especialidade;
 
-    public Medico(String nome, String cpf, int idade, Long id, String crm, String especialidade) {
-        super(nome, cpf, idade);
-        this.id = id;
-        this.crm = crm;
-        this.especialidade = especialidade;
+    public Medico(MedicoRequestDTO data) {
+        super(data.nome(), data.cpf(), data.idade());
+        this.crm=data.crm();
+        this.especialidade= data.especialidade();
     }
 }
