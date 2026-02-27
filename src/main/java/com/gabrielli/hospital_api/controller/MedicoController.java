@@ -20,10 +20,10 @@ public class MedicoController {
     public MedicoResponseDTO criarMedico(@RequestBody MedicoRequestDTO data){return medicoService.criarMedico(data);}
 
     @CrossOrigin(origins = "*",allowedHeaders = "*")
-    @DeleteMapping({"/id"})
+    @DeleteMapping({"/{id}"})
     public void deletarMedico(@PathVariable Long id){medicoService.deletarMedico(id);}
 
     @CrossOrigin(origins = "*",allowedHeaders = "*")
-    @GetMapping({"/id"})
+    @GetMapping({"/{id}"})
     public MedicoResponseDTO buscarMedico(@PathVariable Long id){return medicoService.buscarMedico(id);}
 }
