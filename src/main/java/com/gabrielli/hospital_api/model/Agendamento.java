@@ -5,6 +5,7 @@ import com.gabrielli.hospital_api.enums.StatusAgendamento;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -14,6 +15,7 @@ import java.time.LocalTime;
 @Table (name = "agendamentos")
 @NoArgsConstructor
 @Getter
+@Setter
 
 public class Agendamento {
     @Id

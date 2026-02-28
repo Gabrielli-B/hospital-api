@@ -20,9 +20,7 @@ public class AgendamentoService {
     //criar
     public AgendamentoResponseDTO criarAgendamento(AgendamentoRequestDTO agendamentoDto){
         Agendamento agendamento = new Agendamento(agendamentoDto);
-        if(agendamentoRepository.existsByDataHora(agendamento.getDataHora())){
-            throw new RuntimeException("Impossível agendar! horário já agendado");
-        }
+        verificarDataHora(agendamento);
         agendamentoRepository.save(agendamento);
         return new AgendamentoResponseDTO(agendamento);
     }
@@ -36,8 +34,24 @@ public class AgendamentoService {
     }
 
     //atualizar agendamento
-   // public AgendamentoResponseDTO atualizarAgendamento(Long id, AgendamentoUpdateDTO agendamentoDto){
-     //   Agendamento agendamento = agendamentoRepository.findById(id).orElseThrow(()->new IdNotExist(id));
+   public AgendamentoResponseDTO atualizarAgendamento(Long id, AgendamentoUpdateDTO agendamentoDto){
+        Agendamento agendamento = agendamentoRepository.findById(id).orElseThrow(()->new IdNotExist(id));
+        verificarDataHora(agendamento);
+        if(agendamento.getMedico()!=null){
+            agendamento.setMedico(agendamentoDto.medico());
+        }
+        if(agendamento.getDataHora()!=null){
+            agendamento.setDataHora(agendamentoDto.dataHora());
+        }
+        if(agendamento.getStatus()!=null){
+            agendamento.setStatus(agendamentoDto.status());
+        }
+        return new AgendamentoResponseDTO(agendamento);
+    }
 
-    //}
+    public void verificarDataHora(Agendamento agendamento){
+        if(agendamentoRepository.existsByDataHora(agendamento.getDataHora())){
+            throw new RuntimeException("Impossível agendar! horário já agendado");
+        }
+    }
 }
