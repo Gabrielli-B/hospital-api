@@ -19,8 +19,8 @@ public class PacienteService {
     }
 
     //criar
-    public PacienteResponseDTO criarPaciente(PacienteRequestDTO data){
-        Paciente paciente = new Paciente(data);
+    public PacienteResponseDTO criarPaciente(PacienteRequestDTO pacienteDto){
+        Paciente paciente = new Paciente(pacienteDto);
         Paciente pacienteSalvo = pacienteRepository.save(paciente);
         return new PacienteResponseDTO(pacienteSalvo);
 
@@ -40,19 +40,19 @@ public class PacienteService {
     }
 
     //atualizar dados paciente
-    public PacienteResponseDTO atualizarDadosPaciente(long id, PacienteUpdateDTO data) {
+    public PacienteResponseDTO atualizarDadosPaciente(long id, PacienteUpdateDTO pacienteDto) {
         Paciente paciente = pacienteRepository.findById(id).orElseThrow(()-> new IdNotExist(id));
-        if(data.endereco()!=null){
-            validarCampo(data.endereco(), " endereço");
-            paciente.setEndereco(data.endereco());
+        if(pacienteDto.endereco()!=null){
+            validarCampo(pacienteDto.endereco(), " endereço");
+            paciente.setEndereco(pacienteDto.endereco());
         }
-        if(data.email()!=null){
-            validarCampo(data.email()," E-mail");
-            paciente.setEmail(data.email());
+        if(pacienteDto.email()!=null){
+            validarCampo(pacienteDto.email()," E-mail");
+            paciente.setEmail(pacienteDto.email());
         }
-        if(data.telefone()!=null){
-            validarCampo(data.telefone()," telefone");
-            paciente.setTelefone(data.telefone());
+        if(pacienteDto.telefone()!=null){
+            validarCampo(pacienteDto.telefone()," telefone");
+            paciente.setTelefone(pacienteDto.telefone());
         }
         pacienteRepository.save(paciente);
         return  new PacienteResponseDTO(paciente);

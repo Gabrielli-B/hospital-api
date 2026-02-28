@@ -19,9 +19,9 @@ public class Medico  extends Pessoa{
     private String crm;
     private String especialidade;
 
-    public Medico(MedicoRequestDTO data) {
-        super(data.nome(), data.cpf(), data.idade());
-        this.crm=data.crm();
-        this.especialidade= data.especialidade();
+    public Medico(MedicoRequestDTO medicoDto) {
+        super(medicoDto.nome(), medicoDto.cpf(), medicoDto.idade());
+        this.crm=medicoDto.crm();
+        this.especialidade= medicoDto.especialidade();
     }
 }

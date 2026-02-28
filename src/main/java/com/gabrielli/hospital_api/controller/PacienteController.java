@@ -17,7 +17,7 @@ public class PacienteController {
 
     @CrossOrigin(origins = "*",allowedHeaders = "*")
     @PostMapping
-    public PacienteResponseDTO criarPaciente(@RequestBody PacienteRequestDTO data){return pacienteService.criarPaciente(data);}
+    public PacienteResponseDTO criarPaciente(@RequestBody PacienteRequestDTO pacienteDto){return pacienteService.criarPaciente(pacienteDto);}
 
     @CrossOrigin(origins = "*",allowedHeaders = "*")
     @GetMapping("/{id}")
@@ -25,7 +25,7 @@ public class PacienteController {
 
     @CrossOrigin(origins = "*",allowedHeaders = "*")
     @PatchMapping("/{id}")
-    public PacienteResponseDTO atualizarDadosPaciente(@PathVariable long id, @RequestBody PacienteUpdateDTO data){return pacienteService.atualizarDadosPaciente(id,data);}
+    public PacienteResponseDTO atualizarDadosPaciente(@PathVariable long id, @RequestBody PacienteUpdateDTO pacienteDto){return pacienteService.atualizarDadosPaciente(id,pacienteDto);}
 
     @CrossOrigin(origins = "*",allowedHeaders = "*")
     @DeleteMapping("/{id}")

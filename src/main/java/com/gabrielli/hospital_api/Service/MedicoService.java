@@ -16,8 +16,8 @@ public class MedicoService {
         this.medicoRepository=medicoRepository;
     }
     //criar
-    public MedicoResponseDTO criarMedico(MedicoRequestDTO data){
-        Medico medico = new Medico(data);
+    public MedicoResponseDTO criarMedico(MedicoRequestDTO medicoDto){
+        Medico medico = new Medico(medicoDto);
         medicoRepository.save(medico);
         return new MedicoResponseDTO(medico);
     }

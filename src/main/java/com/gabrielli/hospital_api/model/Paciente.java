@@ -20,10 +20,10 @@ public class Paciente extends Pessoa{
     private String email;
     private String endereco;
 
-    public Paciente(PacienteRequestDTO data){
-        super(data.nome(), data.cpf(), data.idade());
-        this.telefone = data.telefone();
-        this.email = data.email();
-        this.endereco = data.endereco();
+    public Paciente(PacienteRequestDTO pacienteDto){
+        super(pacienteDto.nome(), pacienteDto.cpf(), pacienteDto.idade());
+        this.telefone = pacienteDto.telefone();
+        this.email = pacienteDto.email();
+        this.endereco = pacienteDto.endereco();
     }
 }

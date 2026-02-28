@@ -17,7 +17,7 @@ public class MedicoController {
 
     @CrossOrigin(origins = "*",allowedHeaders = "*")
     @PostMapping
-    public MedicoResponseDTO criarMedico(@RequestBody MedicoRequestDTO data){return medicoService.criarMedico(data);}
+    public MedicoResponseDTO criarMedico(@RequestBody MedicoRequestDTO medicoDto){return medicoService.criarMedico(medicoDto);}
 
     @CrossOrigin(origins = "*",allowedHeaders = "*")
     @DeleteMapping({"/{id}"})
