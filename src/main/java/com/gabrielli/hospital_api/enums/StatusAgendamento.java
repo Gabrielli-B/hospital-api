@@ -1,4 +1,4 @@
-package com.gabrielli.hospital_api.controller.enums;
+package com.gabrielli.hospital_api.enums;
 
 import lombok.Getter;
 
