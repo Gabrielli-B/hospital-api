@@ -1,8 +1,58 @@
 package com.gabrielli.hospital_api.controller;
 
-import org.springframework.web.bind.annotation.RestController;
+import com.gabrielli.hospital_api.DTO.AgendamentoRequestDTO;
+import com.gabrielli.hospital_api.DTO.AgendamentoResponseDTO;
+import com.gabrielli.hospital_api.DTO.AgendamentoUpdateDTO;
+import com.gabrielli.hospital_api.Service.AgendamentoService;
+import com.gabrielli.hospital_api.enums.StatusAgendamento;
+import com.gabrielli.hospital_api.model.Agendamento;
+import com.gabrielli.hospital_api.model.Medico;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
+@RequestMapping("/agendamentos")
+
 public class AgendamentoController {
 
+    private final AgendamentoService agendamentoService;
+
+    public AgendamentoController(AgendamentoService agendamentoService) {
+        this.agendamentoService = agendamentoService;
+    }
+
+    @PostMapping
+    public AgendamentoResponseDTO criarAgendamento(@RequestBody AgendamentoRequestDTO agendamentoDto){return agendamentoService.criarAgendamento(agendamentoDto);}
+
+    @DeleteMapping("/{id}")
+    public void deletarAgendamento(@PathVariable Long id){agendamentoService.deletarAgendamento(id);}
+
+    @PatchMapping("/{id}")
+    public AgendamentoResponseDTO atualizarAgendamento(@PathVariable Long id,@RequestBody AgendamentoUpdateDTO agendamentoDto){return agendamentoService.atualizarAgendamento(id,agendamentoDto);}
+
+    @GetMapping("/medico/data")
+    public List<Agendamento> buscarAgendamentoMedicoEData(@RequestParam Long medicoId, @RequestParam String data){
+        LocalDate localDate = LocalDate.parse(data);
+
+        LocalDateTime inicio = localDate.atStartOfDay();
+        LocalDateTime fim = localDate.atTime(23,59,59);
+
+        return agendamentoService.buscarAgendamentoMedicoDataHora(medicoId,inicio,fim);
+    }
+
+    @GetMapping("/status")
+    public List<Agendamento> buscarAgendamentoStatus(@RequestParam StatusAgendamento status){return agendamentoService.buscarAgendamentoStatus(status);}
+
+    @GetMapping("/medico/data-status")
+    public List<Agendamento> buscarAgendamentoMedicoDataStatus(@RequestParam Long medicoId,@RequestParam StatusAgendamento status,@RequestParam String data){
+        LocalDate localDate = LocalDate.parse(data);
+
+        LocalDateTime inicio = localDate.atStartOfDay();
+        LocalDateTime fim = localDate.atTime(23,59,59);
+
+        return agendamentoService.buscarAgendamentoMedicoDataStatus(medicoId,status,inicio,fim);
+    }
 }
