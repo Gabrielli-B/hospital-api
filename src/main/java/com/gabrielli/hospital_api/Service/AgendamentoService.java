@@ -7,6 +7,7 @@ import com.gabrielli.hospital_api.exception.IdNotExist;
 import com.gabrielli.hospital_api.model.Agendamento;
 import com.gabrielli.hospital_api.model.Medico;
 import com.gabrielli.hospital_api.repository.AgendamentoRepository;
+import com.gabrielli.hospital_api.repository.MedicoRepository;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,9 +16,11 @@ import java.util.List;
 public class AgendamentoService {
 
     private final AgendamentoRepository agendamentoRepository;
+    private final MedicoRepository medicoRepository;
 
-    public AgendamentoService(AgendamentoRepository agendamentoRepository) {
+    public AgendamentoService(AgendamentoRepository agendamentoRepository,MedicoRepository medicoRepository) {
         this.agendamentoRepository = agendamentoRepository;
+        this.medicoRepository = medicoRepository;
     }
 
     //criar
@@ -54,7 +57,8 @@ public class AgendamentoService {
     }
 
     //buscar agendamentos pelo medico e dataHora
-    public List<Agendamento> buscarAgendamentoMedicoDataHora(Medico medico, LocalDateTime inicioDia, LocalDateTime fimDia){
+    public List<Agendamento> buscarAgendamentoMedicoDataHora(Long medicoId, LocalDateTime inicioDia, LocalDateTime fimDia){
+        Medico medico = medicoRepository.findById(medicoId).orElseThrow(() -> new IdNotExist(medicoId));
         return agendamentoRepository.findByMedicoAndDataHoraBetween(medico,inicioDia,fimDia);
     }
 
@@ -63,7 +67,8 @@ public class AgendamentoService {
         return agendamentoRepository.findByStatus(status);
     }
 
-    public List<Agendamento> buscarAgendamentoMedicoDataStatus(Medico medico,StatusAgendamento status,LocalDateTime inicioDia,LocalDateTime fimDia){
+    public List<Agendamento> buscarAgendamentoMedicoDataStatus(Long medicoId,StatusAgendamento status,LocalDateTime inicioDia,LocalDateTime fimDia){
+        Medico medico = medicoRepository.findById(medicoId).orElseThrow(() -> new IdNotExist(medicoId));
         return agendamentoRepository.findByMedicoAndStatusAndDataHoraBetween(medico,status,inicioDia,fimDia);
     }
 
