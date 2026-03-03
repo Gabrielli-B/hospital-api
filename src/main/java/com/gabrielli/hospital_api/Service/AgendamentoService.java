@@ -1,12 +1,15 @@
 package com.gabrielli.hospital_api.Service;
-
 import com.gabrielli.hospital_api.DTO.AgendamentoRequestDTO;
 import com.gabrielli.hospital_api.DTO.AgendamentoResponseDTO;
 import com.gabrielli.hospital_api.DTO.AgendamentoUpdateDTO;
+import com.gabrielli.hospital_api.enums.StatusAgendamento;
 import com.gabrielli.hospital_api.exception.IdNotExist;
 import com.gabrielli.hospital_api.model.Agendamento;
+import com.gabrielli.hospital_api.model.Medico;
 import com.gabrielli.hospital_api.repository.AgendamentoRepository;
 import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class AgendamentoService {
@@ -36,17 +39,32 @@ public class AgendamentoService {
     //atualizar agendamento
    public AgendamentoResponseDTO atualizarAgendamento(Long id, AgendamentoUpdateDTO agendamentoDto){
         Agendamento agendamento = agendamentoRepository.findById(id).orElseThrow(()->new IdNotExist(id));
-        verificarDataHora(agendamento);
-        if(agendamento.getMedico()!=null){
+        if(agendamentoDto.medico()!=null){
             agendamento.setMedico(agendamentoDto.medico());
         }
-        if(agendamento.getDataHora()!=null){
+        if(agendamentoDto.dataHora()!=null){
+            verificarDataHora(agendamento);
             agendamento.setDataHora(agendamentoDto.dataHora());
         }
-        if(agendamento.getStatus()!=null){
+        if(agendamentoDto.status()!=null){
             agendamento.setStatus(agendamentoDto.status());
         }
+        agendamentoRepository.save(agendamento);
         return new AgendamentoResponseDTO(agendamento);
+    }
+
+    //buscar agendamentos pelo medico e dataHora
+    public List<Agendamento> buscarAgendamentoMedicoDataHora(Medico medico, LocalDateTime inicioDia, LocalDateTime fimDia){
+        return agendamentoRepository.findByMedicoAndDataHoraBetween(medico,inicioDia,fimDia);
+    }
+
+    //buscar agendamentos pelo status
+    public List<Agendamento> buscarAgendamentoStatus(StatusAgendamento status){
+        return agendamentoRepository.findByStatus(status);
+    }
+
+    public List<Agendamento> buscarAgendamentoMedicoDataStatus(Medico medico,StatusAgendamento status,LocalDateTime inicioDia,LocalDateTime fimDia){
+        return agendamentoRepository.findByMedicoAndStatusAndDataHoraBetween(medico,status,inicioDia,fimDia);
     }
 
     public void verificarDataHora(Agendamento agendamento){
