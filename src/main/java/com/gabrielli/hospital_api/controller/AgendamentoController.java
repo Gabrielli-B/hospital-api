@@ -34,7 +34,7 @@ public class AgendamentoController {
     public AgendamentoResponseDTO atualizarAgendamento(@PathVariable Long id,@RequestBody AgendamentoUpdateDTO agendamentoDto){return agendamentoService.atualizarAgendamento(id,agendamentoDto);}
 
     @GetMapping("/medico/data")
-    public List<Agendamento> buscarAgendamentoMedicoEData(@RequestParam Long medicoId, @RequestParam String data){
+    public List<AgendamentoResponseDTO> buscarAgendamentoMedicoEData(@RequestParam Long medicoId, @RequestParam String data){
         LocalDate localDate = LocalDate.parse(data);
 
         LocalDateTime inicio = localDate.atStartOfDay();
@@ -44,10 +44,10 @@ public class AgendamentoController {
     }
 
     @GetMapping("/status")
-    public List<Agendamento> buscarAgendamentoStatus(@RequestParam StatusAgendamento status){return agendamentoService.buscarAgendamentoStatus(status);}
+    public List<AgendamentoResponseDTO> buscarAgendamentoStatus(@RequestParam StatusAgendamento status){return agendamentoService.buscarAgendamentoStatus(status);}
 
     @GetMapping("/medico/data-status")
-    public List<Agendamento> buscarAgendamentoMedicoDataStatus(@RequestParam Long medicoId,@RequestParam StatusAgendamento status,@RequestParam String data){
+    public List<AgendamentoResponseDTO> buscarAgendamentoMedicoDataStatus(@RequestParam Long medicoId,@RequestParam StatusAgendamento status,@RequestParam String data){
         LocalDate localDate = LocalDate.parse(data);
 
         LocalDateTime inicio = localDate.atStartOfDay();

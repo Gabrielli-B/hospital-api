@@ -57,19 +57,29 @@ public class AgendamentoService {
     }
 
     //buscar agendamentos pelo medico e dataHora
-    public List<Agendamento> buscarAgendamentoMedicoDataHora(Long medicoId, LocalDateTime inicioDia, LocalDateTime fimDia){
+    public List<AgendamentoResponseDTO> buscarAgendamentoMedicoDataHora(Long medicoId, LocalDateTime inicioDia, LocalDateTime fimDia){
         Medico medico = medicoRepository.findById(medicoId).orElseThrow(() -> new IdNotExist(medicoId));
-        return agendamentoRepository.findByMedicoAndDataHoraBetween(medico,inicioDia,fimDia);
+
+        return agendamentoRepository.findByMedicoAndDataHoraBetween(medico,inicioDia,fimDia)
+                .stream()
+                .map(AgendamentoResponseDTO::new)
+                .toList();
     }
 
     //buscar agendamentos pelo status
-    public List<Agendamento> buscarAgendamentoStatus(StatusAgendamento status){
-        return agendamentoRepository.findByStatus(status);
+    public List<AgendamentoResponseDTO> buscarAgendamentoStatus(StatusAgendamento status){
+        return agendamentoRepository.findByStatus(status)
+                .stream()
+                .map(AgendamentoResponseDTO::new)
+                .toList();
     }
 
-    public List<Agendamento> buscarAgendamentoMedicoDataStatus(Long medicoId,StatusAgendamento status,LocalDateTime inicioDia,LocalDateTime fimDia){
+    public List<AgendamentoResponseDTO> buscarAgendamentoMedicoDataStatus(Long medicoId,StatusAgendamento status,LocalDateTime inicioDia,LocalDateTime fimDia){
         Medico medico = medicoRepository.findById(medicoId).orElseThrow(() -> new IdNotExist(medicoId));
-        return agendamentoRepository.findByMedicoAndStatusAndDataHoraBetween(medico,status,inicioDia,fimDia);
+        return agendamentoRepository.findByMedicoAndStatusAndDataHoraBetween(medico,status,inicioDia,fimDia)
+                .stream()
+                .map(AgendamentoResponseDTO::new)
+                .toList();
     }
 
     public void verificarDataHora(Agendamento agendamento){
