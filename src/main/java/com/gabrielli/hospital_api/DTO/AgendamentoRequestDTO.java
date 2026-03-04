@@ -8,6 +8,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 
-public record AgendamentoRequestDTO(Medico medico, Paciente paciente, LocalDateTime dataHora, StatusAgendamento status) {
+public record AgendamentoRequestDTO(Long medicoId, Long pacienteId, LocalDateTime dataHora, StatusAgendamento status) {
 
 }

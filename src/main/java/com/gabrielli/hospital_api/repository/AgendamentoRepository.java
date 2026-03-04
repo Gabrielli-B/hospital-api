@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface AgendamentoRepository extends JpaRepository<Agendamento,Long> {
 
-boolean existsByDataHora(LocalDateTime dataHora);
+boolean existsByMedicoAndDataHora(Medico medico, LocalDateTime dataHora);
 List<Agendamento> findByMedicoAndDataHoraBetween(Medico medico,LocalDateTime inicioDia,LocalDateTime fimDia);
 List<Agendamento> findByStatus(StatusAgendamento status);
 List<Agendamento> findByMedicoAndStatusAndDataHoraBetween(Medico medico,StatusAgendamento status,LocalDateTime inicioDia,LocalDateTime fimDia);

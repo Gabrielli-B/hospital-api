@@ -6,8 +6,10 @@ import com.gabrielli.hospital_api.enums.StatusAgendamento;
 import com.gabrielli.hospital_api.exception.IdNotExist;
 import com.gabrielli.hospital_api.model.Agendamento;
 import com.gabrielli.hospital_api.model.Medico;
+import com.gabrielli.hospital_api.model.Paciente;
 import com.gabrielli.hospital_api.repository.AgendamentoRepository;
 import com.gabrielli.hospital_api.repository.MedicoRepository;
+import com.gabrielli.hospital_api.repository.PacienteRepository;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,17 +19,28 @@ public class AgendamentoService {
 
     private final AgendamentoRepository agendamentoRepository;
     private final MedicoRepository medicoRepository;
+    private final PacienteRepository pacienteRepository;
 
-    public AgendamentoService(AgendamentoRepository agendamentoRepository,MedicoRepository medicoRepository) {
+    public AgendamentoService(AgendamentoRepository agendamentoRepository,MedicoRepository medicoRepository, PacienteRepository pacienteRepository) {
         this.agendamentoRepository = agendamentoRepository;
         this.medicoRepository = medicoRepository;
+        this.pacienteRepository = pacienteRepository;
     }
 
     //criar
     public AgendamentoResponseDTO criarAgendamento(AgendamentoRequestDTO agendamentoDto){
-        Agendamento agendamento = new Agendamento(agendamentoDto);
+        Medico medico = medicoRepository.findById(agendamentoDto.medicoId()).orElseThrow(()->new IdNotExist(agendamentoDto.medicoId()));
+        Paciente paciente = pacienteRepository.findById(agendamentoDto.pacienteId()).orElseThrow(()->new IdNotExist(agendamentoDto.pacienteId()));
+
+        Agendamento agendamento = new Agendamento();
+        agendamento.setMedico(medico);
+        agendamento.setPaciente(paciente);
+        agendamento.setDataHora(agendamentoDto.dataHora());
+        agendamento.setStatus(agendamentoDto.status());
+
         verificarDataHora(agendamento);
         agendamentoRepository.save(agendamento);
+
         return new AgendamentoResponseDTO(agendamento);
     }
 
@@ -42,12 +55,13 @@ public class AgendamentoService {
     //atualizar agendamento
    public AgendamentoResponseDTO atualizarAgendamento(Long id, AgendamentoUpdateDTO agendamentoDto){
         Agendamento agendamento = agendamentoRepository.findById(id).orElseThrow(()->new IdNotExist(id));
-        if(agendamentoDto.medico()!=null){
-            agendamento.setMedico(agendamentoDto.medico());
+        if(agendamentoDto.medicoId()!=null){
+            Medico medico = medicoRepository.findById(agendamentoDto.medicoId()).orElseThrow(()->new IdNotExist(agendamentoDto.medicoId()));
+            agendamento.setMedico(medico);
         }
         if(agendamentoDto.dataHora()!=null){
-            verificarDataHora(agendamento);
             agendamento.setDataHora(agendamentoDto.dataHora());
+            verificarDataHora(agendamento);
         }
         if(agendamentoDto.status()!=null){
             agendamento.setStatus(agendamentoDto.status());
@@ -83,7 +97,7 @@ public class AgendamentoService {
     }
 
     public void verificarDataHora(Agendamento agendamento){
-        if(agendamentoRepository.existsByDataHora(agendamento.getDataHora())){
+        if(agendamentoRepository.existsByMedicoAndDataHora(agendamento.getMedico(),agendamento.getDataHora())){
             throw new RuntimeException("Impossível agendar! horário já agendado");
         }
     }
