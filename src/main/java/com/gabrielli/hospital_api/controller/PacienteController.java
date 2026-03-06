@@ -6,6 +6,8 @@ import com.gabrielli.hospital_api.DTO.PacienteUpdateDTO;
 import com.gabrielli.hospital_api.Service.PacienteService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/pacientes")
@@ -27,4 +29,7 @@ public class PacienteController {
 
     @DeleteMapping("/{id}")
     public void deletarPaciente(@PathVariable long id){pacienteService.deletarPaciente(id);};
+
+    @GetMapping
+    public List<PacienteResponseDTO> listarPacientes(){return pacienteService.listarPacientes();}
 }

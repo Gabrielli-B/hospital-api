@@ -8,6 +8,8 @@ import com.gabrielli.hospital_api.model.Paciente;
 import com.gabrielli.hospital_api.repository.PacienteRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static com.gabrielli.hospital_api.util.ValidarCampos.validarCampoPaciente;
 
 @Service
@@ -56,5 +58,13 @@ public class PacienteService {
         }
         pacienteRepository.save(paciente);
         return  new PacienteResponseDTO(paciente);
+    }
+
+    //listar pacientes
+    public List<PacienteResponseDTO> listarPacientes(){
+        return pacienteRepository.findAll()
+                .stream()
+                .map(PacienteResponseDTO::new)
+                .toList();
     }
 }

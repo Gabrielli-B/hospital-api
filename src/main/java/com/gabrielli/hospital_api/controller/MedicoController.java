@@ -5,6 +5,8 @@ import com.gabrielli.hospital_api.DTO.MedicoResponseDTO;
 import com.gabrielli.hospital_api.Service.MedicoService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/medicos")
@@ -24,4 +26,8 @@ public class MedicoController {
 
     @GetMapping({"/{id}"})
     public MedicoResponseDTO buscarMedico(@PathVariable Long id){return medicoService.buscarMedico(id);}
+
+    @GetMapping
+    public List<MedicoResponseDTO> listarMedicos(){return medicoService.listarMedicos();}
+
 }

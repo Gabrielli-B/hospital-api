@@ -1,10 +1,13 @@
 package com.gabrielli.hospital_api.Service;
 import com.gabrielli.hospital_api.DTO.MedicoRequestDTO;
 import com.gabrielli.hospital_api.DTO.MedicoResponseDTO;
+import com.gabrielli.hospital_api.DTO.PacienteResponseDTO;
 import com.gabrielli.hospital_api.exception.IdNotExistException;
 import com.gabrielli.hospital_api.model.Medico;
 import com.gabrielli.hospital_api.repository.MedicoRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MedicoService {
@@ -31,4 +34,13 @@ public class MedicoService {
         Medico medico = medicoRepository.findById(id).orElseThrow(()->new IdNotExistException(id));
         return new MedicoResponseDTO(medico);
     }
+
+    //listar
+    public List<MedicoResponseDTO> listarMedicos(){
+        return medicoRepository.findAll()
+                .stream()
+                .map(MedicoResponseDTO ::new)
+                .toList();
+    }
+
 }
