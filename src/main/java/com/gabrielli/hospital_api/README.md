@@ -148,11 +148,17 @@ Os endpoints foram testados utilizando **Postman**, garantindo o correto funcion
 ### ➕ Cadastrar Paciente
 [![Cadastrar Paciente](postman_testes/cadastrarPaciente.png)](postman_testes/cadastrarPaciente.png)
 
-### 🔎 Buscar Medico
+### 🔎 Buscar Medico pelo id
 [![Buscar medico](postman_testes/buscarMedico.png)](postman_testes/buscarMedico.png)
 
-### 🔎 Buscar Paciente
+### 🔎 Buscar Paciente pelo id
 [![Buscar paciente](postman_testes/buscarPaciente.png)](postman_testes/buscarPaciente.png)
+
+### 📄 Listar Pacientes
+[![listar pacientes](postman_testes/listarPacientes.png)](postman_testes/listarPacientes.png)
+
+### 📄 Listar Medicos
+[![listar medicos](postman_testes/listarMedicos.png)](postman_testes/listarMedicos.png)
 
 ### ➕ Criar agendamento
 [![Criar agendameto](postman_testes/criarAgendamento.png)](postman_testes/criarAgendamento.png)
