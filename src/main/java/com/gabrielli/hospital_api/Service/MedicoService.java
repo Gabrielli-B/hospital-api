@@ -1,7 +1,7 @@
 package com.gabrielli.hospital_api.Service;
 import com.gabrielli.hospital_api.DTO.MedicoRequestDTO;
 import com.gabrielli.hospital_api.DTO.MedicoResponseDTO;
-import com.gabrielli.hospital_api.exception.IdNotExist;
+import com.gabrielli.hospital_api.exception.IdNotExistException;
 import com.gabrielli.hospital_api.model.Medico;
 import com.gabrielli.hospital_api.repository.MedicoRepository;
 import org.springframework.stereotype.Service;
@@ -22,13 +22,13 @@ public class MedicoService {
     //deletar
     public void deletarMedico(Long id){
         if(!medicoRepository.existsById(id)){
-            throw new IdNotExist(id);
+            throw new IdNotExistException(id);
         }
         medicoRepository.deleteById(id);
     }
     //buscar
     public MedicoResponseDTO buscarMedico(Long id){
-        Medico medico = medicoRepository.findById(id).orElseThrow(()->new IdNotExist(id));
+        Medico medico = medicoRepository.findById(id).orElseThrow(()->new IdNotExistException(id));
         return new MedicoResponseDTO(medico);
     }
 }

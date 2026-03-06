@@ -4,7 +4,7 @@ import com.gabrielli.hospital_api.DTO.AgendamentoResponseDTO;
 import com.gabrielli.hospital_api.DTO.AgendamentoUpdateDTO;
 import com.gabrielli.hospital_api.enums.StatusAgendamento;
 import com.gabrielli.hospital_api.exception.DadoInvalidoException;
-import com.gabrielli.hospital_api.exception.IdNotExist;
+import com.gabrielli.hospital_api.exception.IdNotExistException;
 import com.gabrielli.hospital_api.model.Agendamento;
 import com.gabrielli.hospital_api.model.Medico;
 import com.gabrielli.hospital_api.model.Paciente;
@@ -33,8 +33,8 @@ public class AgendamentoService {
 
     //criar
     public AgendamentoResponseDTO criarAgendamento(AgendamentoRequestDTO agendamentoDto){
-        Medico medico = medicoRepository.findById(agendamentoDto.medicoId()).orElseThrow(()->new IdNotExist(agendamentoDto.medicoId()));
-        Paciente paciente = pacienteRepository.findById(agendamentoDto.pacienteId()).orElseThrow(()->new IdNotExist(agendamentoDto.pacienteId()));
+        Medico medico = medicoRepository.findById(agendamentoDto.medicoId()).orElseThrow(()->new IdNotExistException(agendamentoDto.medicoId()));
+        Paciente paciente = pacienteRepository.findById(agendamentoDto.pacienteId()).orElseThrow(()->new IdNotExistException(agendamentoDto.pacienteId()));
 
         Agendamento agendamento = new Agendamento(medico,paciente,agendamentoDto);
 
@@ -47,16 +47,16 @@ public class AgendamentoService {
     //deletar agendamento
     public void deletarAgendamento(Long id){
         if(!agendamentoRepository.existsById(id)){
-            throw new IdNotExist(id);
+            throw new IdNotExistException(id);
         }
         agendamentoRepository.deleteById(id);
     }
 
     //atualizar agendamento
    public AgendamentoResponseDTO atualizarAgendamento(Long id, AgendamentoUpdateDTO agendamentoDto){
-        Agendamento agendamento = agendamentoRepository.findById(id).orElseThrow(()->new IdNotExist(id));
+        Agendamento agendamento = agendamentoRepository.findById(id).orElseThrow(()->new IdNotExistException(id));
         if(agendamentoDto.medicoId()!=null){
-            Medico medico = medicoRepository.findById(agendamentoDto.medicoId()).orElseThrow(()->new IdNotExist(agendamentoDto.medicoId()));
+            Medico medico = medicoRepository.findById(agendamentoDto.medicoId()).orElseThrow(()->new IdNotExistException(agendamentoDto.medicoId()));
             agendamento.setMedico(medico);
         }
         if(agendamentoDto.dataHora()!=null){
@@ -72,7 +72,7 @@ public class AgendamentoService {
 
     //buscar agendamentos pelo medico e dataHora
     public List<AgendamentoResponseDTO> buscarAgendamentoMedicoDataHora(Long medicoId, String data){
-        Medico medico = medicoRepository.findById(medicoId).orElseThrow(() -> new IdNotExist(medicoId));
+        Medico medico = medicoRepository.findById(medicoId).orElseThrow(() -> new IdNotExistException(medicoId));
 
         LocalDate localDate = Data.parseLocalDate(data);
         LocalDateTime inicio = Data.inicioDia(localDate);
@@ -93,7 +93,7 @@ public class AgendamentoService {
     }
 
     public List<AgendamentoResponseDTO> buscarAgendamentoMedicoDataStatus(Long medicoId,StatusAgendamento status,String data){
-        Medico medico = medicoRepository.findById(medicoId).orElseThrow(() -> new IdNotExist(medicoId));
+        Medico medico = medicoRepository.findById(medicoId).orElseThrow(() -> new IdNotExistException(medicoId));
         LocalDate localDate = Data.parseLocalDate(data);
         LocalDateTime inicio = Data.inicioDia(localDate);
         LocalDateTime fim = Data.fimDoDia(localDate);
