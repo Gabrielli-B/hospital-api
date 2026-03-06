@@ -1,18 +1,13 @@
 package com.gabrielli.hospital_api.controller;
-
 import com.gabrielli.hospital_api.DTO.AgendamentoRequestDTO;
 import com.gabrielli.hospital_api.DTO.AgendamentoResponseDTO;
 import com.gabrielli.hospital_api.DTO.AgendamentoUpdateDTO;
 import com.gabrielli.hospital_api.Service.AgendamentoService;
 import com.gabrielli.hospital_api.enums.StatusAgendamento;
-import com.gabrielli.hospital_api.model.Agendamento;
-import com.gabrielli.hospital_api.model.Medico;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/agendamentos")
 

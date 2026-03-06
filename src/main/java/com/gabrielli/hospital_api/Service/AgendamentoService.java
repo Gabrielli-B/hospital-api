@@ -3,6 +3,7 @@ import com.gabrielli.hospital_api.DTO.AgendamentoRequestDTO;
 import com.gabrielli.hospital_api.DTO.AgendamentoResponseDTO;
 import com.gabrielli.hospital_api.DTO.AgendamentoUpdateDTO;
 import com.gabrielli.hospital_api.enums.StatusAgendamento;
+import com.gabrielli.hospital_api.exception.DadoInvalidoException;
 import com.gabrielli.hospital_api.exception.IdNotExist;
 import com.gabrielli.hospital_api.model.Agendamento;
 import com.gabrielli.hospital_api.model.Medico;
@@ -35,11 +36,7 @@ public class AgendamentoService {
         Medico medico = medicoRepository.findById(agendamentoDto.medicoId()).orElseThrow(()->new IdNotExist(agendamentoDto.medicoId()));
         Paciente paciente = pacienteRepository.findById(agendamentoDto.pacienteId()).orElseThrow(()->new IdNotExist(agendamentoDto.pacienteId()));
 
-        Agendamento agendamento = new Agendamento();
-        agendamento.setMedico(medico);
-        agendamento.setPaciente(paciente);
-        agendamento.setDataHora(agendamentoDto.dataHora());
-        agendamento.setStatus(agendamentoDto.status());
+        Agendamento agendamento = new Agendamento(medico,paciente,agendamentoDto);
 
         verificarDataHora(agendamento);
         agendamentoRepository.save(agendamento);
@@ -112,7 +109,7 @@ public class AgendamentoService {
        LocalDateTime inicio = Data.inicioDia(localDate);
        LocalDateTime fim = Data.fimDoDia(localDate);
 
-       return agendamentoRepository.findByData(inicio,fim)
+       return agendamentoRepository.findByDataHoraBetween(inicio,fim)
                .stream()
                .map(AgendamentoResponseDTO::new)
                .toList();
@@ -120,7 +117,7 @@ public class AgendamentoService {
 
     public void verificarDataHora(Agendamento agendamento){
         if(agendamentoRepository.existsByMedicoAndDataHora(agendamento.getMedico(),agendamento.getDataHora())){
-            throw new RuntimeException("Impossível agendar! horário já agendado");
+            throw new DadoInvalidoException("Horário já agendado");
         }
     }
 }

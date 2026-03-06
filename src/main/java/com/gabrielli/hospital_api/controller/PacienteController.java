@@ -6,6 +6,7 @@ import com.gabrielli.hospital_api.DTO.PacienteUpdateDTO;
 import com.gabrielli.hospital_api.Service.PacienteService;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/pacientes")
 public class PacienteController {
@@ -15,21 +16,15 @@ public class PacienteController {
         this.pacienteService = pacienteService;
     }
 
-    @CrossOrigin(origins = "*",allowedHeaders = "*")
     @PostMapping
     public PacienteResponseDTO criarPaciente(@RequestBody PacienteRequestDTO pacienteDto){return pacienteService.criarPaciente(pacienteDto);}
 
-    @CrossOrigin(origins = "*",allowedHeaders = "*")
     @GetMapping("/{id}")
     public PacienteResponseDTO buscarPaciente(@PathVariable long id){return pacienteService.buscarPaciente(id);};
 
-    @CrossOrigin(origins = "*",allowedHeaders = "*")
     @PatchMapping("/{id}")
     public PacienteResponseDTO atualizarDadosPaciente(@PathVariable long id, @RequestBody PacienteUpdateDTO pacienteDto){return pacienteService.atualizarDadosPaciente(id,pacienteDto);}
 
-    @CrossOrigin(origins = "*",allowedHeaders = "*")
     @DeleteMapping("/{id}")
     public void deletarPaciente(@PathVariable long id){pacienteService.deletarPaciente(id);};
-
-
 }

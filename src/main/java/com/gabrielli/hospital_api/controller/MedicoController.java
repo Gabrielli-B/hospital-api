@@ -5,6 +5,7 @@ import com.gabrielli.hospital_api.DTO.MedicoResponseDTO;
 import com.gabrielli.hospital_api.Service.MedicoService;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/medicos")
 
@@ -15,15 +16,12 @@ public class MedicoController {
         this.medicoService=medicoService;
     }
 
-    @CrossOrigin(origins = "*",allowedHeaders = "*")
     @PostMapping
     public MedicoResponseDTO criarMedico(@RequestBody MedicoRequestDTO medicoDto){return medicoService.criarMedico(medicoDto);}
 
-    @CrossOrigin(origins = "*",allowedHeaders = "*")
     @DeleteMapping({"/{id}"})
     public void deletarMedico(@PathVariable Long id){medicoService.deletarMedico(id);}
 
-    @CrossOrigin(origins = "*",allowedHeaders = "*")
     @GetMapping({"/{id}"})
     public MedicoResponseDTO buscarMedico(@PathVariable Long id){return medicoService.buscarMedico(id);}
 }

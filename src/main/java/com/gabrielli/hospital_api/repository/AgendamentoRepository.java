@@ -3,8 +3,6 @@ import com.gabrielli.hospital_api.enums.StatusAgendamento;
 import com.gabrielli.hospital_api.model.Agendamento;
 import com.gabrielli.hospital_api.model.Medico;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,7 +12,7 @@ boolean existsByMedicoAndDataHora(Medico medico, LocalDateTime dataHora);
 List<Agendamento> findByMedicoAndDataHoraBetween(Medico medico,LocalDateTime inicioDia,LocalDateTime fimDia);
 List<Agendamento> findByStatus(StatusAgendamento status);
 List<Agendamento> findByMedicoAndStatusAndDataHoraBetween(Medico medico,StatusAgendamento status,LocalDateTime inicioDia,LocalDateTime fimDia);
-List<Agendamento> findByData(LocalDateTime inicio,LocalDateTime fim);
+List<Agendamento> findByDataHoraBetween(LocalDateTime inicio, LocalDateTime fim);
 
 
 }

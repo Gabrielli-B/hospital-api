@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 
 @Entity
@@ -17,18 +16,26 @@ import java.time.LocalTime;
 @Getter
 @Setter
 
+
 public class Agendamento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @ManyToOne
+    @JoinColumn(name = "medico_id")
     private Medico medico;
+
+    @ManyToOne //relacionamento muitos para 1, chave estrangeira
+    @JoinColumn(name = "paciente_id")
     private Paciente paciente;
+
     private LocalDateTime dataHora;
     private StatusAgendamento status;
 
-    public Agendamento(AgendamentoRequestDTO agendamentoDto) {
-        this.medico = agendamentoDto.medico();
-        this.paciente = agendamentoDto.paciente();
+    public Agendamento(Medico medico, Paciente paciente, AgendamentoRequestDTO agendamentoDto) {
+        this.medico = medico;
+        this.paciente = paciente;
         this.dataHora = agendamentoDto.dataHora();;
         this.status = agendamentoDto.status();
     }
