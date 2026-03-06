@@ -34,25 +34,14 @@ public class AgendamentoController {
     public AgendamentoResponseDTO atualizarAgendamento(@PathVariable Long id,@RequestBody AgendamentoUpdateDTO agendamentoDto){return agendamentoService.atualizarAgendamento(id,agendamentoDto);}
 
     @GetMapping("/medico/data")
-    public List<AgendamentoResponseDTO> buscarAgendamentoMedicoEData(@RequestParam Long medicoId, @RequestParam String data){
-        LocalDate localDate = LocalDate.parse(data);
-
-        LocalDateTime inicio = localDate.atStartOfDay();
-        LocalDateTime fim = localDate.atTime(23,59,59);
-
-        return agendamentoService.buscarAgendamentoMedicoDataHora(medicoId,inicio,fim);
-    }
+    public List<AgendamentoResponseDTO> buscarAgendamentoMedicoEData(@RequestParam Long medicoId, @RequestParam String data){return agendamentoService.buscarAgendamentoMedicoDataHora(medicoId,data);}
 
     @GetMapping("/status")
     public List<AgendamentoResponseDTO> buscarAgendamentoStatus(@RequestParam StatusAgendamento status){return agendamentoService.buscarAgendamentoStatus(status);}
 
     @GetMapping("/medico/data-status")
-    public List<AgendamentoResponseDTO> buscarAgendamentoMedicoDataStatus(@RequestParam Long medicoId,@RequestParam StatusAgendamento status,@RequestParam String data){
-        LocalDate localDate = LocalDate.parse(data);
+    public List<AgendamentoResponseDTO> buscarAgendamentoMedicoDataStatus(@RequestParam Long medicoId,@RequestParam StatusAgendamento status,@RequestParam String data){return agendamentoService.buscarAgendamentoMedicoDataStatus(medicoId,status,data);}
 
-        LocalDateTime inicio = localDate.atStartOfDay();
-        LocalDateTime fim = localDate.atTime(23,59,59);
-
-        return agendamentoService.buscarAgendamentoMedicoDataStatus(medicoId,status,inicio,fim);
-    }
+    @GetMapping("/data")
+    public List<AgendamentoResponseDTO> buscarAgendamentoData(@RequestParam String data){return agendamentoService.buscarAgendamentoData(data);}
 }

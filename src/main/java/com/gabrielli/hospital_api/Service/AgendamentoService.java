@@ -10,7 +10,10 @@ import com.gabrielli.hospital_api.model.Paciente;
 import com.gabrielli.hospital_api.repository.AgendamentoRepository;
 import com.gabrielli.hospital_api.repository.MedicoRepository;
 import com.gabrielli.hospital_api.repository.PacienteRepository;
+import com.gabrielli.hospital_api.util.Data;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -71,10 +74,14 @@ public class AgendamentoService {
     }
 
     //buscar agendamentos pelo medico e dataHora
-    public List<AgendamentoResponseDTO> buscarAgendamentoMedicoDataHora(Long medicoId, LocalDateTime inicioDia, LocalDateTime fimDia){
+    public List<AgendamentoResponseDTO> buscarAgendamentoMedicoDataHora(Long medicoId, String data){
         Medico medico = medicoRepository.findById(medicoId).orElseThrow(() -> new IdNotExist(medicoId));
 
-        return agendamentoRepository.findByMedicoAndDataHoraBetween(medico,inicioDia,fimDia)
+        LocalDate localDate = Data.parseLocalDate(data);
+        LocalDateTime inicio = Data.inicioDia(localDate);
+        LocalDateTime fim = Data.fimDoDia(localDate);
+
+        return agendamentoRepository.findByMedicoAndDataHoraBetween(medico,inicio,fim)
                 .stream()
                 .map(AgendamentoResponseDTO::new)
                 .toList();
@@ -88,12 +95,27 @@ public class AgendamentoService {
                 .toList();
     }
 
-    public List<AgendamentoResponseDTO> buscarAgendamentoMedicoDataStatus(Long medicoId,StatusAgendamento status,LocalDateTime inicioDia,LocalDateTime fimDia){
+    public List<AgendamentoResponseDTO> buscarAgendamentoMedicoDataStatus(Long medicoId,StatusAgendamento status,String data){
         Medico medico = medicoRepository.findById(medicoId).orElseThrow(() -> new IdNotExist(medicoId));
-        return agendamentoRepository.findByMedicoAndStatusAndDataHoraBetween(medico,status,inicioDia,fimDia)
+        LocalDate localDate = Data.parseLocalDate(data);
+        LocalDateTime inicio = Data.inicioDia(localDate);
+        LocalDateTime fim = Data.fimDoDia(localDate);
+
+        return agendamentoRepository.findByMedicoAndStatusAndDataHoraBetween(medico,status,inicio,fim)
                 .stream()
                 .map(AgendamentoResponseDTO::new)
                 .toList();
+    }
+
+   public List<AgendamentoResponseDTO> buscarAgendamentoData(String data){
+       LocalDate localDate = Data.parseLocalDate(data);
+       LocalDateTime inicio = Data.inicioDia(localDate);
+       LocalDateTime fim = Data.fimDoDia(localDate);
+
+       return agendamentoRepository.findByData(inicio,fim)
+               .stream()
+               .map(AgendamentoResponseDTO::new)
+               .toList();
     }
 
     public void verificarDataHora(Agendamento agendamento){
