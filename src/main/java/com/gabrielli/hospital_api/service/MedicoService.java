@@ -1,7 +1,6 @@
-package com.gabrielli.hospital_api.Service;
+package com.gabrielli.hospital_api.service;
 import com.gabrielli.hospital_api.DTO.MedicoRequestDTO;
 import com.gabrielli.hospital_api.DTO.MedicoResponseDTO;
-import com.gabrielli.hospital_api.DTO.PacienteResponseDTO;
 import com.gabrielli.hospital_api.exception.IdNotExistException;
 import com.gabrielli.hospital_api.model.Medico;
 import com.gabrielli.hospital_api.repository.MedicoRepository;

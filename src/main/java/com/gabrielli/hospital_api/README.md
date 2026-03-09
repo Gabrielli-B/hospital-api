@@ -18,6 +18,7 @@ Este projeto foi desenvolvido com o objetivo de **praticar conceitos de backend 
 - PostgreSQL
 - Maven
 - Lombok
+- Swagger / OpenAPI
 - Postman (para testes da API)
 
 ---
@@ -135,6 +136,29 @@ A API possui **exceções customizadas** para melhorar o retorno de erros:
 
 - **IdNotExistException** – quando um registro não é encontrado
 - **DadodInvalidoException** – quando o dado informado é inválido
+
+---
+
+# 📘 Documentação da API (Swagger)
+
+A API possui documentação automática utilizando **Swagger / OpenAPI**, permitindo visualizar e testar os endpoints diretamente pelo navegador.
+
+Após iniciar a aplicação, acesse:
+
+http://localhost:8080/swagger-ui/index.html
+
+No Swagger é possível:
+
+- visualizar todos os endpoints da API
+- testar requisições diretamente pelo navegador
+- enviar dados em JSON
+- visualizar respostas da API
+
+---
+
+# 🧪 Testes da API
+
+Durante o desenvolvimento, os endpoints foram testados utilizando **Swagger** e **Postman**.
 
 ---
 

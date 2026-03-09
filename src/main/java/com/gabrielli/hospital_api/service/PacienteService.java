@@ -1,4 +1,4 @@
-package com.gabrielli.hospital_api.Service;
+package com.gabrielli.hospital_api.service;
 
 import com.gabrielli.hospital_api.DTO.PacienteRequestDTO;
 import com.gabrielli.hospital_api.DTO.PacienteResponseDTO;
