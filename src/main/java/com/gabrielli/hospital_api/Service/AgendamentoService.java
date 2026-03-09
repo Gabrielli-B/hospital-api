@@ -9,8 +9,6 @@ import com.gabrielli.hospital_api.model.Agendamento;
 import com.gabrielli.hospital_api.model.Medico;
 import com.gabrielli.hospital_api.model.Paciente;
 import com.gabrielli.hospital_api.repository.AgendamentoRepository;
-import com.gabrielli.hospital_api.repository.MedicoRepository;
-import com.gabrielli.hospital_api.repository.PacienteRepository;
 import com.gabrielli.hospital_api.util.Data;
 import org.springframework.stereotype.Service;
 
@@ -22,19 +20,19 @@ import java.util.List;
 public class AgendamentoService {
 
     private final AgendamentoRepository agendamentoRepository;
-    private final MedicoRepository medicoRepository;
-    private final PacienteRepository pacienteRepository;
+    private final MedicoService medicoService;
+    private final PacienteService pacienteService;
 
-    public AgendamentoService(AgendamentoRepository agendamentoRepository,MedicoRepository medicoRepository, PacienteRepository pacienteRepository) {
+    public AgendamentoService(AgendamentoRepository agendamentoRepository,MedicoService medicoService, PacienteService pacienteService) {
         this.agendamentoRepository = agendamentoRepository;
-        this.medicoRepository = medicoRepository;
-        this.pacienteRepository = pacienteRepository;
+        this.medicoService = medicoService;
+        this.pacienteService = pacienteService;
     }
 
     //criar
     public AgendamentoResponseDTO criarAgendamento(AgendamentoRequestDTO agendamentoDto){
-        Medico medico = medicoRepository.findById(agendamentoDto.medicoId()).orElseThrow(()->new IdNotExistException(agendamentoDto.medicoId()));
-        Paciente paciente = pacienteRepository.findById(agendamentoDto.pacienteId()).orElseThrow(()->new IdNotExistException(agendamentoDto.pacienteId()));
+        Medico medico = medicoService.buscarMedicoPorId(agendamentoDto.medicoId());
+        Paciente paciente = pacienteService.buscarPacienteId(agendamentoDto.pacienteId());
 
         Agendamento agendamento = new Agendamento(medico,paciente,agendamentoDto);
 
@@ -56,7 +54,7 @@ public class AgendamentoService {
    public AgendamentoResponseDTO atualizarAgendamento(Long id, AgendamentoUpdateDTO agendamentoDto){
         Agendamento agendamento = agendamentoRepository.findById(id).orElseThrow(()->new IdNotExistException(id));
         if(agendamentoDto.medicoId()!=null){
-            Medico medico = medicoRepository.findById(agendamentoDto.medicoId()).orElseThrow(()->new IdNotExistException(agendamentoDto.medicoId()));
+            Medico medico = medicoService.buscarMedicoPorId(agendamentoDto.medicoId());
             agendamento.setMedico(medico);
         }
         if(agendamentoDto.dataHora()!=null){
@@ -72,7 +70,7 @@ public class AgendamentoService {
 
     //buscar agendamentos pelo medico e dataHora
     public List<AgendamentoResponseDTO> buscarAgendamentoMedicoDataHora(Long medicoId, String data){
-        Medico medico = medicoRepository.findById(medicoId).orElseThrow(() -> new IdNotExistException(medicoId));
+        Medico medico = medicoService.buscarMedicoPorId(medicoId);
 
         LocalDate localDate = Data.parseLocalDate(data);
         LocalDateTime inicio = Data.inicioDia(localDate);
@@ -93,7 +91,7 @@ public class AgendamentoService {
     }
 
     public List<AgendamentoResponseDTO> buscarAgendamentoMedicoDataStatus(Long medicoId,StatusAgendamento status,String data){
-        Medico medico = medicoRepository.findById(medicoId).orElseThrow(() -> new IdNotExistException(medicoId));
+        Medico medico = medicoService.buscarMedicoPorId(medicoId);
         LocalDate localDate = Data.parseLocalDate(data);
         LocalDateTime inicio = Data.inicioDia(localDate);
         LocalDateTime fim = Data.fimDoDia(localDate);

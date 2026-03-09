@@ -41,6 +41,10 @@ public class PacienteService {
         return new PacienteResponseDTO(paciente);
     }
 
+    public Paciente buscarPacienteId(Long id){
+        return pacienteRepository.findById(id).orElseThrow(()->new IdNotExistException(id));
+    }
+
     //atualizar dados paciente
     public PacienteResponseDTO atualizarDadosPaciente(long id, PacienteUpdateDTO pacienteDto) {
         Paciente paciente = pacienteRepository.findById(id).orElseThrow(()-> new IdNotExistException(id));

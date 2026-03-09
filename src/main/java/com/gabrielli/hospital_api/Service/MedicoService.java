@@ -35,6 +35,10 @@ public class MedicoService {
         return new MedicoResponseDTO(medico);
     }
 
+    public Medico buscarMedicoPorId(Long id){
+        return medicoRepository.findById(id).orElseThrow(()->new IdNotExistException(id));
+    }
+
     //listar
     public List<MedicoResponseDTO> listarMedicos(){
         return medicoRepository.findAll()
